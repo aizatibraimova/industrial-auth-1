@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  include Pundit
-
-  after_action :verify_authorized, unless: :devise_controller?
-  after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
-  
   attr_reader :user, :record
 
   def initialize(user, record)
