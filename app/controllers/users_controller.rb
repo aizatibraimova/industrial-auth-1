@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    authorize @user
+    authorize(@user)
   end
 
   def edit
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    authorize @user
+    authorize(@user)
   end
 
   def update
