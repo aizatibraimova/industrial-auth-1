@@ -2,7 +2,6 @@ class PhotosController < ApplicationController
   before_action :set_photo, only: %i[ show edit update destroy ]
   before_action :authorize_photo, except: %i[ index new create ]
 
-
   # GET /photos or /photos.json
   def index
     @photos = policy_scope(Photo)
@@ -41,7 +40,6 @@ class PhotosController < ApplicationController
 
   # PATCH/PUT /photos/1 or /photos/1.json
   def update
-    authorize @photo
     respond_to do |format|
       if @photo.update(photo_params)
         format.html { redirect_to @photo, notice: "Photo was successfully updated." }
@@ -55,7 +53,6 @@ class PhotosController < ApplicationController
 
   # DELETE /photos/1 or /photos/1.json
   def destroy
-    authorize @photo
     @photo.destroy
 
     respond_to do |format|
@@ -72,7 +69,7 @@ class PhotosController < ApplicationController
   end
 
   def authorize_photo
-    authorize(@photo)
+    authorize @photo
   end
 
   # Only allow a list of trusted parameters through.

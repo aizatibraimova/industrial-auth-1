@@ -7,7 +7,7 @@ class FollowRequestPolicy < ApplicationPolicy
   end
 
   def show?
-    user == follow_request.sender || follow_request.recipient
+    user == follow_request.sender || user == follow_request.recipient
   end
 
 
@@ -33,7 +33,9 @@ class FollowRequestPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      scope.all
+      scope.all.select do |follow_request|
+        user == follow_request.sender || user == follow_request.recipient
+      end
     end
   end
 end

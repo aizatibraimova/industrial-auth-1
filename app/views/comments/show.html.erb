@@ -13,8 +13,5 @@
   <%= @comment.body %>
 </p>
 
-<% if policy(@comment).edit? %>
-  <%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= end %>
-
+<%= link_to 'Edit', edit_comment_path(@comment) %> |
 <%= link_to 'Back', comments_path %>

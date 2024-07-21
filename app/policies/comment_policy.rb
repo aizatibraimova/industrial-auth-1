@@ -11,7 +11,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def edit?
-    user == comment.author
+    update?
   end
 
   def destroy?
@@ -22,17 +22,19 @@ class CommentPolicy < ApplicationPolicy
     create?
   end
 
-   def create?
+  def create?
     !user.nil?
   end
 
-   def update?
+  def update?
     user == comment.author
   end
 
   class Scope < Scope
     def resolve
-      scope.where(author: user)
+      scope.all.select do |comment|
+        comment.author == user || !comment.author.private? || comment.author.followers.include?(user)
+      end
     end
   end
 end

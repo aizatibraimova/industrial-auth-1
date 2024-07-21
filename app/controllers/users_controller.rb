@@ -2,6 +2,9 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show liked feed followers following discover ]
   before_action :authorize_user, except: %i[ index new create ]
 
+  # after_action :verify_authorized, except: :index
+  # after_action :verify_policy_scoped, only: :index
+
   def index
     @users = policy_scope(User)
   end
@@ -50,6 +53,10 @@ class UsersController < ApplicationController
   end
 
   def authorize_user
-    authorize @user
+    authorize(@user)
+  end
+
+  def user_params
+    params.require(:user).permit(:email, :username, :private, :avatar_image, :website, :bio, :name)
   end
 end
