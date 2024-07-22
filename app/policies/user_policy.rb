@@ -7,32 +7,23 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
+    !user.private? || current_user == user || user.followers.include?(current_user)
     true
   end
 
   def feed?
-    true
-  end
-
-  def edit?
-    update?
+    !user.private? || current_user == user || user.followers.include?(current_user)
   end
 
   def update?
     user == current_user || current_user.admin?
   end
 
-  def destroy?
-    user == current_user || current_user.admin?
+  def edit?
+    update?
   end
 
-  class Scope < Scope
-    def resolve
-      if user.admin?
-        scope.all
-      else
-        scope.where(private: false).or(scope.where(id: user.following.id).or(scope.where(id: user.id)))
-      end
-    end
+  def destroy?
+    urrent_user.admin?
   end
 end
