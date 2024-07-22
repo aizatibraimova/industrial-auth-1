@@ -7,16 +7,31 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    !user.private? || current_user == user || user.followers.include?(current_user)
+    true
+  end
+
+  def show_photos?
+     !user.private? || current_user == user || user.followers.include?(current_user) || current_user.followers.include?(user)
+  end
+  
+  def followers?
+    true
+  end
+
+  def following?
+    true
+  end
+
+  def discover?
     true
   end
 
   def feed?
-    !user.private? || current_user == user || user.followers.include?(current_user)
+    true
   end
 
   def update?
-    user == current_user || current_user.admin?
+    user == current_user
   end
 
   def edit?
@@ -24,6 +39,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    urrent_user.admin?
+    current_user == user 
   end
 end
