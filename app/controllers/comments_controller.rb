@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[ show edit update destroy ]
-  before_action :authorize_comment, except: %i[ index new create ]
+  before_action -> { authorize @comment || Comment }, except: %i[new create]
 
   # GET /comments or /comments.json
   def index
@@ -14,21 +14,17 @@ class CommentsController < ApplicationController
   # GET /comments/new
   def new
     @comment = Comment.new
-    authorize(@comment)
   end
 
   # GET /comments/1/edit
   def edit
-    respond_to do |format|
-      format.html
-    end
   end
 
   # POST /comments or /comments.json
   def create
     @comment = Comment.new(comment_params)
     @comment.author = current_user
-    authorize(@comment)
+    authorize @comment
 
     respond_to do |format|
       if @comment.save
@@ -43,7 +39,6 @@ class CommentsController < ApplicationController
 
   # PATCH/PUT /comments/1 or /comments/1.json
   def update
-    authorize(@comment)
     respond_to do |format|
       if @comment.update(comment_params)
         format.html { redirect_to root_url, notice: "Comment was successfully updated." }
@@ -69,10 +64,6 @@ class CommentsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_comment
     @comment = Comment.find(params[:id])
-  end
-
-  def authorize_comment
-    authorize(@comment)
   end
 
   # Only allow a list of trusted parameters through.

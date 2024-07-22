@@ -7,34 +7,22 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def show?
-    user == comment.author || !comment.author.private? || comment.author.followers.include?(user)
+    true
+  end
+  
+  def create?
+    true
   end
 
   def edit?
     update?
   end
 
-  def destroy?
-    user == comment.author
-  end
-
-  def new?
-    create?
-  end
-
-  def create?
-    !user.nil?
-  end
-
   def update?
     user == comment.author
   end
-
-  class Scope < Scope
-    def resolve
-      scope.all.select do |comment|
-        comment.author == user || !comment.author.private? || comment.author.followers.include?(user)
-      end
-    end
+  
+  def destroy?
+    user == comment.author
   end
 end
