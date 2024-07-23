@@ -69,35 +69,33 @@
       <% end %>
     </div>
 
-    <% if current_user == user %>
-      <div class="row mb-3">
-        <div class="col">
-          <% follow_request = current_user.pending_received_follow_requests.find_by(sender: @user) %>
+    <div class="row mb-3">
+      <div class="col">
+        <% follow_request = current_user.pending_received_follow_requests.find_by(sender: @user) %>
 
-          <% if follow_request %>
-            <p class="lead text-center">
-              <%= @user.username %> has sent you a follow request.
-            </p>
+        <% if follow_request %>
+          <p class="lead text-center">
+            <%= @user.username %> has sent you a follow request.
+          </p>
 
-            <% follow_request.status = "accepted" %>
+          <% follow_request.status = "accepted" %>
 
-            <%= form_with(model: follow_request) do |form| %>
-              <%= form.hidden_field :status %>
+          <%= form_with(model: follow_request) do |form| %>
+            <%= form.hidden_field :status %>
 
-              <%= form.submit "Accept follow request", class: "btn btn-outline-success btn-block mb-3" %>
-            <% end %>
-
-            <% follow_request.status = "rejected" %>
-
-            <%= form_with(model: follow_request) do |form| %>
-              <%= form.hidden_field :status %>
-
-              <%= form.submit "Reject follow request", class: "btn btn-outline-danger btn-block mb-3" %>
-            <% end %>
+            <%= form.submit "Accept follow request", class: "btn btn-outline-success btn-block mb-3" %>
           <% end %>
-        </div>
+
+          <% follow_request.status = "rejected" %>
+
+          <%= form_with(model: follow_request) do |form| %>
+            <%= form.hidden_field :status %>
+
+            <%= form.submit "Reject follow request", class: "btn btn-outline-danger btn-block mb-3" %>
+          <% end %>
+        <% end %>
       </div>
-    <% end %>
+    </div>
 
     <div class="row mb-4">
       <div class="col">
