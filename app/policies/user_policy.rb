@@ -11,7 +11,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show_photos?
-     !user.private? || current_user == user || user.followers.include?(current_user) || current_user.followers.include?(user)
+     !user.private? || current_user == user || user.followers.include?(current_user) 
   end
   
   def followers?
