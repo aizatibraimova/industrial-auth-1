@@ -98,7 +98,7 @@
     <div class="row mb-4">
       <div class="col">
         <% follow_request = current_user.sent_follow_requests.find_by(recipient: @user) %>
-        <%# if @user != current_user %>
+        <% if @user != current_user %>
           <% if follow_request %>
             <%= link_to follow_request, data: { turbo_method: :delete }, class: "btn btn-outline-secondary btn-block" do %>
               <% if follow_request.pending? %>
@@ -110,7 +110,7 @@
           <% else %>
             <%= render "follow_requests/form", follow_request: @user.received_follow_requests.build %>
           <% end %>
-        <%# end %>
+        <% end %>
       </div>
     </div>
 

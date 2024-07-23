@@ -21,4 +21,10 @@ class FollowRequestPolicy < ApplicationPolicy
   def destroy?
     user == follow_request.sender || user == follow_request.recipient
   end
+
+  class Scope < Scope
+    def resolve
+      scope.where(recipient: user)
+    end
+  end
 end
