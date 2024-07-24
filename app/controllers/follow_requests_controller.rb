@@ -1,9 +1,10 @@
 class FollowRequestsController < ApplicationController
   before_action :set_follow_request, only: %i[ show edit update destroy ]
+  before_action -> { authorize @follow_request || FollowRequest }, only: [:show, :edit, :update, :destroy]
 
   # GET /follow_requests or /follow_requests.json
   def index
-    @follow_requests = FollowRequest.all
+    @follow_requests = policy_scope(FollowRequest)
   end
 
   # GET /follow_requests/1 or /follow_requests/1.json
@@ -13,6 +14,7 @@ class FollowRequestsController < ApplicationController
   # GET /follow_requests/new
   def new
     @follow_request = FollowRequest.new
+    authorize @follow_request
   end
 
   # GET /follow_requests/1/edit
@@ -23,6 +25,7 @@ class FollowRequestsController < ApplicationController
   def create
     @follow_request = FollowRequest.new(follow_request_params)
     @follow_request.sender = current_user
+    authorize @follow_request
 
     respond_to do |format|
       if @follow_request.save
